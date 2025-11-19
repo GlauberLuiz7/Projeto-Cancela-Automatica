@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janela de login e Cadastro</title>
+    <link rel="stylesheet" href="style-login.css">
+</head>
+<body>
+
+    <section class="container-geral-login">
+        
+        <div id="login" class="container-box">
+            <h2 class="titulo-reg">Login</h2>
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Senha">
+            <button onclick="doLogin()">Entrar</button>
+
+            <div class="link" onclick="showScreen('register')">Criar Conta</div>
+            <div class="link" onclick="showScreen('recover')">Esqueci a senha</div>
+        </div>
+
+        <div id="register" class="container-box hidden">
+            <h2 class="titulo-reg">Cadastre-se</h2>
+            <input type="text" id="regName" placeholder="Nome Completo">
+            <input type="email" id="regEmail" placeholder="Seu melhor Email">
+            <input type="password" id="regPassword" placeholder="Senha Forte">
+            <button onclick="doCreate()">Cadastrar</button>
+
+            <div class="link" onclick="showScreen('login')">Voltar a página de login</div>
+        </div>
+
+        <div id="recover" class="container-box hidden">
+            <h2 class="titulo-reg">Recuperar Senha</h2>
+            <input type="email" id="recEmail" placeholder="Email cadastrado">
+            <button onclick="doRecover()">Enviar</button>
+        </div>
+
+    </section>
+
+    <script src="script-login.js"></script>
+
+</body>
+</html>
