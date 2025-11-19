@@ -6,7 +6,7 @@ function showScreen(screen) {
 }
 
 function doLogin() {
-    window.location.href = "../index.html";
+    window.location.href = "../home-admin/index.html";
     showScreen("login");
 }
 
