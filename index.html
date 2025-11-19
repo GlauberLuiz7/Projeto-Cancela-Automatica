@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão de Estacionamento</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-title">
+                    <h1>Sistema de Gestão de Estacionamento</h1>
+                    <p>Controle Inteligente e Automatizado</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-info">
+                    <div class="user-details">
+                        <span class="user-name">Operador</span>
+                        <span class="user-role">Admin</span>
+                    </div>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="close-sidebar" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-page="cancelas">
+                    <i class="fas fa-door-open"></i>
+                    <span>Controle de Cancelas</span>
+                </button>
+                <button class="nav-item" data-page="usuarios">
+                    <i class="fas fa-users"></i>
+                    <span>Usuários</span>
+                </button>
+                <button class="nav-item" data-page="veiculos">
+                    <i class="fas fa-car"></i>
+                    <span>Veículos</span>
+                </button>
+                <button class="nav-item" data-page="saldos">
+                    <i class="fas fa-wallet"></i>
+                    <span>Saldos e Recargas</span>
+                </button>
+                <button class="nav-item" data-page="estadias">
+                    <i class="fas fa-receipt"></i>
+                    <span>Estadias</span>
+                </button>
+                <button class="nav-item" data-page="relatorios">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Relatórios</span>
+                </button>
+                <button class="nav-item" data-page="auditoria">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Auditoria</span>
+                </button>
+                <button class="nav-item" data-page="configuracoes">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <p>Status do Sistema</p>
+                    <div class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span>Operacional</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Dashboard -->
+            <div class="page active" id="dashboard">
+                <div class="page-header">
+                    <h2>Dashboard Operacional</h2>
+                    <p>Visão geral em tempo real</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card stat-primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="veiculosEstacionamento">0</div>
+                            <div class="stat-label">Veículos no Estacionamento</div>
+                            <div class="stat-info">Ocupação: <span id="ocupacaoPercent">0%</span></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-accent">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="receitaDia">R$ 0,00</div>
+                            <div class="stat-label">Receita do Dia</div>
+                            <div class="stat-info"><span id="estadiasHoje">0</span> estadias hoje</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-success">
+                        <div class="stat-icon">
+                            <i class="fas fa-door-open"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value"><span id="cancelasOp">0</span>/<span id="cancelasTotal">0</span></div>
+                            <div class="stat-label">Cancelas Operacionais</div>
+                            <div class="stat-info success">Sistema funcionando normalmente</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-alert">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="alertasAtivos">0</div>
+                            <div class="stat-label">Alertas Ativos</div>
+                            <div class="stat-info">Média de saldo: <span id="saldoMedio">R$ 0,00</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-clock"></i>
+                            <h3>Veículos em Estacionamento</h3>
+                        </div>
+                        <div class="card-content" id="veiculosLista"></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Atividades Recentes</h3>
+                        </div>
+                        <div class="card-content" id="atividadesRecentes"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Receita dos Últimos 7 Dias</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="chart" id="receitaChart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controle de Cancelas -->
+            <div class="page" id="cancelas">
+                <div class="page-header">
+                    <h2>Controle de Cancelas</h2>
+                    <p>Monitoramento e controle em tempo real</p>
+                </div>
+                <div class="cancelas-grid" id="cancelasGrid"></div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Status Geral</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="status-grid" id="cancelasStatus"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Usuários -->
+            <div class="page" id="usuarios">
+                <div class="page-header">
+                    <h2>Gestão de Usuários</h2>
+                    <p>Cadastro e controle de acesso</p>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="filters">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Buscar por nome, email ou CPF..." id="searchUsuarios">
+                            </div>
+                            <select id="filterTipoUsuario">
+                                <option value="todos">Todos os tipos</option>
+                                <option value="funcionario">Funcionários</option>
+                                <option value="aluno">Alunos</option>
+                                <option value="visitante">Visitantes</option>
+                                <option value="operador">Operadores</option>
+                                <option value="admin">Administradores</option>
+                            </select>
+                            <button class="btn btn-primary" id="btnNovoUsuario">
+                                <i class="fas fa-plus"></i>
+                                Novo Usuário
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="data-table" id="usuariosTable"></table>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-small-grid" id="usuariosStats"></div>
+            </div>
+
+            <!-- Veículos -->
+            <div class="page" id="veiculos">
+                <div class="page-header">
+                    <h2>Gestão de Veículos</h2>
+                    <p>Cadastro e vinculação de veículos aos usuários</p>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="data-table" id="veiculosTable"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Saldos e Recargas -->
+            <div class="page" id="saldos">
+                <div class="page-header">
+                    <h2>Saldos e Recargas</h2>
+                    <p>Gestão financeira de carteiras</p>
+                </div>
+                <div class="stats-grid-3" id="saldosStats"></div>
+                <div class="card" id="carteirasLista"></div>
+            </div>
+
+            <!-- Estadias -->
+            <div class="page" id="estadias">
+                <div class="page-header">
+                    <h2>Estadias</h2>
+                    <p>Histórico e controle de permanências</p>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="data-table" id="estadiasTable"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatórios -->
+            <div class="page" id="relatorios">
+                <div class="page-header">
+                    <h2>Relatórios</h2>
+                    <p>Análises financeiras e operacionais</p>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="filters">
+                            <select id="tipoRelatorio">
+                                <option value="financeiro">Financeiro</option>
+                                <option value="operacional">Operacional</option>
+                                <option value="estadias">Estadias</option>
+                                <option value="recargas">Recargas</option>
+                            </select>
+                            <input type="date" id="dataInicio" value="2025-11-01">
+                            <input type="date" id="dataFim" value="2025-11-30">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-download"></i>
+                                Exportar PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-grid-3" id="relatoriosStats"></div>
+                <div class="card" id="relatorioConteudo"></div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Receita Mensal</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="chart" id="receitaMensalChart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auditoria -->
+            <div class="page" id="auditoria">
+                <div class="page-header">
+                    <h2>Auditoria e Logs</h2>
+                    <p>Trilha completa de eventos do sistema</p>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="filters">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Buscar por ator, ação ou alvo..." id="searchAuditoria">
+                            </div>
+                            <select id="filterAcao">
+                                <option value="todas">Todas as Ações</option>
+                            </select>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-download"></i>
+                                Exportar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-grid" id="auditoriaStats"></div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Timeline de Auditoria</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="timeline" id="auditoriaTimeline"></div>
+                    </div>
+                </div>
+                <div class="card card-info">
+                    <div class="card-content">
+                        <div class="info-section">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h4>Política de Auditoria</h4>
+                                <ul>
+                                    <li>Todos os eventos são registrados com timestamp imutável</li>
+                                    <li>Logs são criptografados e armazenados de forma segura</li>
+                                    <li>Retenção de dados: 5 anos (conforme LGPD)</li>
+                                    <li>Acesso restrito apenas para administradores autorizados</li>
+                                    <li>Rastreabilidade completa de todas as ações críticas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configurações -->
+            <div class="page" id="configuracoes">
+                <div class="page-header">
+                    <h2>Configurações do Sistema</h2>
+                    <p>Tarifas, descontos e parâmetros operacionais</p>
+                </div>
+                <div class="settings-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <h3>Tarifas</h3>
+                        </div>
+                        <div class="card-content" id="tarifasConfig"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-percent"></i>
+                            <h3>Descontos Ativos</h3>
+                        </div>
+                        <div class="card-content" id="descontosLista"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Simulador de Cobrança</h3>
+                    </div>
+                    <div class="card-content" id="simuladorCobranca"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Parâmetros Operacionais</h3>
+                    </div>
+                    <div class="card-content" id="parametrosOperacionais"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Abertura Manual -->
+    <div class="modal" id="modalAbertura">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Abertura Manual de Cancela</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Placa do Veículo *</label>
+                    <input type="text" id="placaVeiculo" placeholder="ABC-1234" maxlength="8">
+                </div>
+                <div class="form-group">
+                    <label>Motivo da Abertura Manual *</label>
+                    <textarea id="motivoAbertura" rows="3" placeholder="Ex: Visitante, Sistema indisponível, Teste..."></textarea>
+                </div>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p><strong>Atenção:</strong> Esta ação será registrada no log de auditoria com seu usuário e horário exato.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelarAbertura">Cancelar</button>
+                <button class="btn btn-primary" id="btnConfirmarAbertura">Confirmar Abertura</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Recarga -->
+    <div class="modal" id="modalRecarga">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Nova Recarga</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Valor da Recarga *</label>
+                    <div class="input-with-prefix">
+                        <span>R$</span>
+                        <input type="number" id="valorRecarga" placeholder="0,00" step="0.01" min="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Método de Pagamento *</label>
+                    <div class="payment-methods">
+                        <button class="payment-method active" data-method="pix">
+                            <i class="fas fa-qrcode"></i>
+                            <span>PIX</span>
+                        </button>
+                        <button class="payment-method" data-method="cartao">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Cartão</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <p><strong>Informação:</strong> A recarga será processada imediatamente e o saldo ficará disponível na carteira do usuário.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelarRecarga">Cancelar</button>
+                <button class="btn btn-primary" id="btnConfirmarRecarga">Confirmar Recarga</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
