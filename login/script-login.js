@@ -1,79 +1,76 @@
-const API_URL = "http://localhost:5000";
-
-function showScreen(screen) {
-    document.getElementById("login").classList.add("hidden");
-    document.getElementById("register").classList.add("hidden");
-    document.getElementById("recover").classList.add("hidden");
-    document.getElementById(screen).classList.remove("hidden");
+// Alternar telas
+function showScreen(screenId) {
+    document.querySelectorAll('.container-box').forEach(box => box.classList.add('hidden'));
+    document.getElementById(screenId).classList.remove('hidden');
 }
 
-// --------------------------------------
-// LOGIN
-// --------------------------------------
-async function doLogin() {
-    const email = document.getElementById("loginEmail").value;
-    const senha = document.getElementById("loginPassword").value;
+/* --------------------------
+   CADASTRO
+---------------------------*/
+function doCreate() {
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const password = document.getElementById("regPassword").value.trim();
 
-    const response = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, senha })
-    });
-
-    const data = await response.json();
-
-    if (!data.sucesso) {
-        alert("❌ " + data.mensagem);
+    if (!name || !email || !password) {
+        alert("Preencha todos os campos!");
         return;
     }
 
-    alert("✔ Login realizado!");
+    // Pega lista existente
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
 
-    // Redireciona conforme o tipo de conta
-    if (data.tipo === "admin") {
-        window.location.href = "../home-admin/index.html";
-    } else {
-        window.location.href = "../home-cliente/index.html"; // crie esta pasta depois
-    }
-}
-
-// --------------------------------------
-// CADASTRO
-// --------------------------------------
-async function doCreate() {
-    const nome = document.getElementById("regName").value;
-    const email = document.getElementById("regEmail").value;
-    const senha = document.getElementById("regPassword").value;
-
-    const response = await fetch(`${API_URL}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            nome,
-            email,
-            senha,
-            tipo: "cliente" // padrão
-        })
-    });
-
-    const data = await response.json();
-
-    if (!data.sucesso) {
-        alert("❌ " + data.mensagem);
+    // Verifica se email já existe
+    if (users.some(u => u.email === email)) {
+        alert("Este email já está cadastrado!");
         return;
     }
 
-    alert("✔ Cadastro realizado!");
+    // Adiciona novo usuário
+    users.push({ name, email, password });
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Cadastro realizado com sucesso!");
+
     showScreen("login");
 }
 
-// --------------------------------------
-// RECUPERAR SENHA (simples)
-// --------------------------------------
-async function doRecover() {
-    const email = document.getElementById("recEmail").value;
+/* --------------------------
+   LOGIN
+---------------------------*/
+function doLogin() {
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
 
-    // opcional: criar endpoint no backend
-    alert("📧 Um email seria enviado para: " + email);
-    showScreen("login");
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+    const user = users.find(u => u.email === email && u.password === password);
+
+    if (!user) {
+        alert("Email ou senha incorretos!");
+        return;
+    }
+
+    // Salva usuário logado
+    localStorage.setItem("loggedUser", JSON.stringify(user));
+
+    // Redireciona para página inicial
+    window.location.href = "/home-admin/index.html";
+}
+
+/* --------------------------
+   RECUPERAR SENHA (BÁSICO)
+---------------------------*/
+function doRecover() {
+    const email = document.getElementById("recEmail").value.trim();
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+        alert("Email não encontrado!");
+        return;
+    }
+
+    alert("Opa! Como isso é só front-end, exibirei a senha aqui:\n\nSua senha é: " + user.password);
 }
